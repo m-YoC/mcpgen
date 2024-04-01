@@ -61,7 +61,7 @@ func createYAML() {
 
 /*--------------------------------------------------------------*/
 
-func generate(probtype string, length uint, gen_num uint, separators string, use_digit bool, digit_prob float64, use_upper bool, upper_prob float64) {
+func generate(probtype string, length uint, gen_num uint, separators string, use_digit bool, digit_prob float64, use_upper bool, upper_prob float64, always_newline bool) {
   m := markov.MCPGenData{Markov: io.ReadEmbeded(getProbType(probtype))}
 
   max_length := 80
@@ -78,7 +78,7 @@ func generate(probtype string, length uint, gen_num uint, separators string, use
       str = markov.ShakeUpper(str, upper_prob)
     }
 
-    if i != 0 && i % oneline_num == 0 {
+    if i != 0 && ( always_newline || i % oneline_num == 0) {
       fmt.Printf("\n")
     }
     
@@ -158,6 +158,12 @@ func main() {
       Hidden:      false,
       Value:       "lorem",
     },
+    &cli.BoolFlag{
+      Name:        "always-newline",
+      Usage:       "Output each password on a new line",
+      Hidden:      false,
+      Value:       false,
+    },
   }
 
   app.Action = func(c *cli.Context) error {
@@ -177,7 +183,7 @@ func main() {
       separators = "."
     }
 
-    generate(c.String("type"), length, number, separators, c.Bool("digit"), dprob, c.Bool("upper"), uprob)
+    generate(c.String("type"), length, number, separators, c.Bool("digit"), dprob, c.Bool("upper"), uprob, c.Bool("always-newline"))
 
     return nil
   }
