@@ -7,7 +7,7 @@ services:
       # dockerfile: gcc.dockerfile
       args:
         WORKDIR: $WORKDIR
-    image: markovpg
+    image: mcpgen
     # container_name: $CONTAINER_NAME
     hostname: container-$COMPOSE_PROJECT_NAME
     volumes:
