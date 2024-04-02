@@ -103,7 +103,7 @@ func main() {
   app := cli.NewApp()
   app.Name = "mcpgen"
   app.Usage = "Markov Chain's Password Generator"
-  app.Version = "0.1.0"
+  app.Version = "0.2.0"
   // app.Description = "xxx"
   app.UseShortOptionHandling = true
 
