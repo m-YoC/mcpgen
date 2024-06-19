@@ -15,5 +15,13 @@ cross-compile: ## cross compile
 	@cd mcpgen_dir && GOOS=darwin  GOARCH=amd64 CGO_ENABLED=0 go build -o ../compiled/mac_intel/mcpgen -ldflags '-s -w' -trimpath
 	@cd mcpgen_dir && GOOS=darwin  GOARCH=arm64 CGO_ENABLED=0 go build -o ../compiled/mac_arm/mcpgen -ldflags '-s -w' -trimpath
 
+install-go-licenses:
+	@GO111MODULE=on go install github.com/google/go-licenses@latest
+	@GO111MODULE=on go install github.com/Songmu/gocredits/cmd/gocredits@latest
+check-licenses:
+	@cd mcpgen_dir && go-licenses csv .
+write-licenses:
+	@cd mcpgen_dir && gocredits --skip-missing > ../CREDITS
+
 help: ## Display this help screen.
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk -F ':.*?## ' '{printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
